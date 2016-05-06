@@ -98,17 +98,7 @@ file zip_filepath do
 end
 
 
-
-ruby_block "get disks from shell output" do
-    block do
-        #tricky way to load this Chef::Mixin::ShellOut utilities
-        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)      
-        command = "for file in $(df | grep -E '^/dev' | awk -F '%' '{print $2}'); do file=`echo --diskpath=$file`; files=`echo $files $file`; done;  echo $files;"
-        command_out = shell_out(command)
-        node.set[:cw_mon][:options] = command_out.stdout
-    end
-    action :create
-end
+node[:cw_mon][:options] = node[:cw_mon][:options] + `for file in $(df | grep -E '^/dev' | awk -F '%' '{print $2}'); do file=$(echo --diskpath=$file); files=$(echo $files $file); done;  echo $files;`
 
 log "Options changed"
 log node[:cw_mon][:options]
