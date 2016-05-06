@@ -106,12 +106,12 @@ ruby_block "get disks from shell output" do
         command = "for file in $(df | grep -E '^/dev' | awk -F '%' '{print $2}'); do file=`echo --diskpath=$file`; files=`echo $files $file`; done;  echo $files;"
         command_out = shell_out(command)
         node.set[:cw_mon][:options] = command_out.stdout
-        log "Command output: " + command_out
+        log "Command output: " + command_out.stdout
     end
     action :create
 end
 
-log "Optins changed"
+log "Options changed"
 log node[:cw_mon][:options]
 
 
