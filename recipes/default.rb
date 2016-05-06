@@ -98,7 +98,7 @@ file zip_filepath do
 end
 
 
-node[:cw_mon][:options] = node[:cw_mon][:options] + `for file in $(df | grep -E '^/dev' | awk -F '%' '{print $2}'); do file=$(echo --diskpath=$file); files=$(echo $files $file); done;  echo $files;`
+node[:cw_mon][:options] = node[:cw_mon][:options].push(`for file in $(df | grep -E '^/dev' | awk -F '%' '{print $2}'); do file=$(echo --diskpath=$file); files=$(echo $files $file); done;  echo $files;`)
 
 log "Options changed"
 log node[:cw_mon][:options]
