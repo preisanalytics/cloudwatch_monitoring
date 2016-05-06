@@ -97,6 +97,20 @@ file zip_filepath do
   action :delete
 end
 
+
+
+ruby_block "get disks from shell output" do
+    block do
+        #tricky way to load this Chef::Mixin::ShellOut utilities
+        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)      
+        command = "for file in $(df | grep -E '^/dev' | awk -F '%' '{print $2}'); do file=`echo --diskpath=$file`; files=`echo $files $file`; done;  echo $files;"
+        command_out = shell_out(command)
+        node.set[:cw_mon][:options] = command_out.stdout
+    end
+    action :create
+end
+
+
 options = ['--from-cron'] + node[:cw_mon][:options]
 
 if iam_role = IAM::role
