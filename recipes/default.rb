@@ -98,7 +98,7 @@ file zip_filepath do
 end
 
 
-disk_path_options = [].push(`for file in $(df | grep -E '^/dev' | awk -F '%' '{print $2}'); do file=$(echo --diskpath=$file); files=$(echo $files $file); done;  printf "%s " $files;`)
+disk_path_options = [].push(`for file in $(df | grep -E '^/dev' | awk -F '%' '{print $2}'); do file=$(echo --disk-path=$file); files=$(echo $files $file); done;  printf "%s " $files;`)
 
 log "Options changed"
 log disk_path_options
