@@ -132,5 +132,5 @@ options << "--aws-credential-file #{install_path}/awscreds.conf"
 cron_d 'cloudwatch_monitoring' do
   minute "*/#{node[:cw_mon][:cron_minutes]}"
   user node[:cw_mon][:user]
-  command %Q{#{install_path}/mon-put-instance-data.pl #{(options).join(' ')} > /dev/null > 2&>1 || logger -t aws-scripts-mon "status=failed exit_code=$?"} 
+  command %Q{#{install_path}/mon-put-instance-data.pl #{(options).join(' ')} --aggregated > /dev/null > 2&>1 || logger -t aws-scripts-mon "status=failed exit_code=$?"} 
 end
